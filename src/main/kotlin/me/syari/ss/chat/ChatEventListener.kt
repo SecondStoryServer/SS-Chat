@@ -4,6 +4,7 @@ import me.syari.ss.chat.ConfigLoader.chatFormat
 import me.syari.ss.chat.Main.Companion.enableDiscord
 import me.syari.ss.core.auto.Event
 import me.syari.ss.core.code.StringEditor.toColor
+import me.syari.ss.core.message.Message.broadcast
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.player.AsyncPlayerChatEvent
@@ -13,7 +14,8 @@ object ChatEventListener: Event {
     fun on(e: AsyncPlayerChatEvent) {
         val player = e.player
         val message = e.message
-        e.message = format(player, message)
+        e.isCancelled = true
+        broadcast(format(player, message))
         if(enableDiscord) DiscordHook.send(player, message)
     }
 
