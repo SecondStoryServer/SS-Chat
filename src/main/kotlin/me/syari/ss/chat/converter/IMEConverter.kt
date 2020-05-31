@@ -7,6 +7,10 @@ import java.net.URLEncoder
 object IMEConverter {
     private const val GOOGLE_IME_URL = "https://www.google.com/transliterate?langpair=ja-Hira|ja&text="
 
+    fun convertWithIMEFromRoma(roma: String): String {
+        return convertWithIME(KanaConverter.convertToKana(roma))
+    }
+
     fun convertWithIME(kana: String): String {
         val readFile = try {
             val url = URL(GOOGLE_IME_URL + URLEncoder.encode(kana, "utf-8"))

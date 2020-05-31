@@ -12,6 +12,9 @@ object ConfigLoader: OnEnable {
         loadConfig(console)
     }
 
+    var jpChatFormat = "%sender%: %jp% (%message%)"
+        private set
+
     var chatFormat = "%sender%: %message%"
         private set
 
@@ -25,7 +28,8 @@ object ConfigLoader: OnEnable {
         private set
 
     private val defaultConfig = mapOf(
-        "format" to chatFormat,
+        "format.jp" to jpChatFormat,
+        "format.normal" to chatFormat,
         "discord.channel" to discordHookChannel,
         "discord.format.send" to discordSendFormat,
         "discord.format.receive" to discordReceiveFormat
@@ -33,7 +37,8 @@ object ConfigLoader: OnEnable {
 
     fun loadConfig(output: CommandSender) {
         config(chatPlugin, output, "config.yml", default = defaultConfig) {
-            chatFormat = get("format", ConfigDataType.STRING, chatFormat, false)
+            jpChatFormat = get("format.jp", ConfigDataType.STRING, chatFormat, false)
+            chatFormat = get("format.normal", ConfigDataType.STRING, chatFormat, false)
             discordHookChannel = get("discord.channel", ConfigDataType.LONG, discordHookChannel, false)
             discordSendFormat = get("discord.format.send", ConfigDataType.STRING, discordSendFormat, false)
             discordReceiveFormat = get("discord.format.receive", ConfigDataType.STRING, discordReceiveFormat, false)
