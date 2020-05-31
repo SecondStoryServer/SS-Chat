@@ -15,7 +15,7 @@ object ConfigLoader: OnEnable {
     var chatFormat = "%sender%: %message%"
         private set
 
-    var discordHookChannel: Long? = null
+    var discordHookChannel = 0L
         private set
 
     var discordSendFormat = "**%sender%**: %message%"
@@ -24,10 +24,17 @@ object ConfigLoader: OnEnable {
     var discordReceiveFormat = "&5[Discord] &f%sender%: %message%"
         private set
 
+    private val defaultConfig = mapOf(
+        "format" to chatFormat,
+        "discord.channel" to discordHookChannel,
+        "discord.format.send" to discordSendFormat,
+        "discord.format.receive" to discordReceiveFormat
+    )
+
     fun loadConfig(output: CommandSender) {
-        config(chatPlugin, output, "config.yml") {
+        config(chatPlugin, output, "config.yml", default = defaultConfig) {
             chatFormat = get("format", ConfigDataType.STRING, chatFormat, false)
-            discordHookChannel = get("discord.channel", ConfigDataType.LONG, false)
+            discordHookChannel = get("discord.channel", ConfigDataType.LONG, discordHookChannel, false)
             discordSendFormat = get("discord.format.send", ConfigDataType.STRING, discordSendFormat, false)
             discordReceiveFormat = get("discord.format.receive", ConfigDataType.STRING, discordReceiveFormat, false)
         }
