@@ -22,9 +22,9 @@ class Main: JavaPlugin() {
         Event.register(this, ChatEventListener)
         if(enableDiscord) {
             Event.register(this, DiscordHook)
-            chatLogger.info("Discord を有効にしました")
+            chatLogger.info("[SS-Chat] Discord を有効にしました")
         } else {
-            chatLogger.info("Discord を無効にしました")
+            chatLogger.info("[SS-Chat] Discord を無効にしました")
         }
     }
 }
