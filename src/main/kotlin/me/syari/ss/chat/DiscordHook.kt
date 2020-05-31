@@ -13,9 +13,7 @@ import org.bukkit.event.EventHandler
 
 object DiscordHook: Event {
     fun send(player: Player, message: String){
-        discordHookChannel?.let {
-            TextChannel.get(it)?.sendMessage(formatSend(player, message))
-        }
+        TextChannel.get(discordHookChannel)?.sendMessage(formatSend(player, message))
     }
 
     private fun formatSend(player: Player, message: String): String {
@@ -24,6 +22,7 @@ object DiscordHook: Event {
 
     @EventHandler
     fun on(e: DiscordMessageReceiveEvent){
+        if(e.user.isBot) return
         val channel = e.channel
         if(channel.idLong == discordHookChannel){
             broadcast(formatReceive(e))
