@@ -102,7 +102,7 @@ object KanaConverter {
                                 append(last + char)
                                 ""
                             }
-                            last[0] == char -> {
+                            last == char.toString() -> {
                                 append("っ")
                                 char.toString()
                             }

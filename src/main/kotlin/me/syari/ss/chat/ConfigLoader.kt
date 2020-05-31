@@ -37,7 +37,7 @@ object ConfigLoader: OnEnable {
 
     fun loadConfig(output: CommandSender) {
         config(chatPlugin, output, "config.yml", default = defaultConfig) {
-            jpChatFormat = get("format.jp", ConfigDataType.STRING, chatFormat, false)
+            jpChatFormat = get("format.jp", ConfigDataType.STRING, jpChatFormat, false)
             chatFormat = get("format.normal", ConfigDataType.STRING, chatFormat, false)
             discordHookChannel = get("discord.channel", ConfigDataType.LONG, discordHookChannel, false)
             discordSendFormat = get("discord.format.send", ConfigDataType.STRING, discordSendFormat, false)

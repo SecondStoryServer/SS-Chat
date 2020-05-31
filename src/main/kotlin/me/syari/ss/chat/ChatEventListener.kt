@@ -24,9 +24,9 @@ object ChatEventListener: Event {
 
     private fun format(sender: Player, message: String): String {
         return if(matchHalfWidthChar(message)){
-            formatNormal(sender, message)
-        } else {
             formatJapanese(sender, message)
+        } else {
+            formatNormal(sender, message)
         }
     }
 
