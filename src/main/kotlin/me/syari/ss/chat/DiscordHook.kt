@@ -15,6 +15,9 @@ import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 
 object DiscordHook: Event {
+    val hookChannel
+        get() = TextChannel.get(discordHookChannel)?.name
+
     fun send(sender: Player, message: String){
         TextChannel.get(discordHookChannel)?.sendMessage(formatSend(sender, message))
     }

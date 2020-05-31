@@ -11,17 +11,26 @@ import me.syari.ss.core.command.create.CreateCommand.tab
 object CommandCreator: OnEnable {
     override fun onEnable() {
         createCommand(chatPlugin, "chat", "SS-Chat",
-            tab { _, _ -> element("discord") }
+            tab { _, _ -> element("discord", "reload") }
         ){ sender, args ->
             when(args.whenIndex(0)){
                 "discord" -> {
-                    sendWithPrefix(if(enableDiscord) "&aDiscord は有効になっています" else "&cDiscord は無効になっています")
+                    val message = if(enableDiscord) {
+                        "&aDiscord は有効になっています &7(接続先: #${DiscordHook.hookChannel})"
+                    } else{
+                        "&cDiscord は無効になっています"
+                    }
+                    sendWithPrefix(message)
                 }
                 "reload" -> {
                     sendWithPrefix("&fコンフィグを再読み込みします")
                     loadConfig(sender)
                     sendWithPrefix("&fコンフィグを再読み込みしました")
                 }
+                else -> sendHelp(
+                    "chat discord" to "Discord が有効かどうかを取得します",
+                    "chat reload" to "コンフィグを再読み込みします"
+                )
             }
         }
     }
