@@ -15,9 +15,9 @@ import org.bukkit.event.player.AsyncPlayerChatEvent
 object ChatEventListener: Event {
     @EventHandler
     fun on(e: AsyncPlayerChatEvent) {
+        e.isCancelled = true
         val player = e.player
         val message = e.message
-        e.isCancelled = true
         send(player, message.toUncolor)
     }
 
