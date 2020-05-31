@@ -22,8 +22,12 @@ object ChatEventListener: Event {
     }
 
     private fun send(sender: Player, message: String) {
-        if(matchHalfWidthChar(message)){
-            sendJapanese(sender, message)
+        if(matchsHalfWidthChar(message)){
+            if (message.firstOrNull() == '.'){
+                sendNormal(sender, message.substring(2))
+            } else {
+                sendJapanese(sender, message)
+            }
         } else {
             sendNormal(sender, message)
         }
@@ -52,7 +56,7 @@ object ChatEventListener: Event {
         return replace("%jp%", jpMessage)
     }
 
-    private fun matchHalfWidthChar(text: String): Boolean {
+    private fun matchsHalfWidthChar(text: String): Boolean {
         return text.matches("^[a-zA-Z0-9!-/:-@\\[-`{-~]*\$".toRegex())
     }
 }
