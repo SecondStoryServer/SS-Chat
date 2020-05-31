@@ -24,6 +24,9 @@ object ConfigLoader: OnEnable {
     var discordSendFormat = "**%sender%**: %message%"
         private set
 
+    var discordSendJpFormat = "**%sender%**: %jp% (%message%)"
+        private set
+
     var discordReceiveFormat = "&5[Discord] &f%sender%: %message%"
         private set
 
@@ -41,6 +44,7 @@ object ConfigLoader: OnEnable {
             chatFormat = get("format.normal", ConfigDataType.STRING, chatFormat, false)
             discordHookChannel = get("discord.channel", ConfigDataType.LONG, discordHookChannel, false)
             discordSendFormat = get("discord.format.send", ConfigDataType.STRING, discordSendFormat, false)
+            discordSendJpFormat = get("discord.format.sendjp", ConfigDataType.STRING, discordSendJpFormat, false)
             discordReceiveFormat = get("discord.format.receive", ConfigDataType.STRING, discordReceiveFormat, false)
         }
     }

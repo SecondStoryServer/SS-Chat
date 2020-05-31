@@ -1,8 +1,11 @@
 package me.syari.ss.chat
 
+import me.syari.ss.chat.ChatEventListener.replaceJp
+import me.syari.ss.chat.ChatEventListener.replaceWith
 import me.syari.ss.chat.ConfigLoader.discordHookChannel
 import me.syari.ss.chat.ConfigLoader.discordReceiveFormat
 import me.syari.ss.chat.ConfigLoader.discordSendFormat
+import me.syari.ss.chat.ConfigLoader.discordSendJpFormat
 import me.syari.ss.core.auto.Event
 import me.syari.ss.core.code.StringEditor.toUncolor
 import me.syari.ss.core.message.Message.broadcast
@@ -12,12 +15,20 @@ import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 
 object DiscordHook: Event {
-    fun send(player: Player, message: String){
-        TextChannel.get(discordHookChannel)?.sendMessage(formatSend(player, message))
+    fun send(sender: Player, message: String){
+        TextChannel.get(discordHookChannel)?.sendMessage(formatSend(sender, message))
     }
 
-    private fun formatSend(player: Player, message: String): String {
-        return discordSendFormat.replace("%sender%", player.displayName).replace("%message%", message).toUncolor
+    fun send(sender: Player, message: String, jpMessage: String){
+        TextChannel.get(discordHookChannel)?.sendMessage(formatSend(sender, message, jpMessage))
+    }
+
+    private fun formatSend(sender: Player, message: String): String {
+        return discordSendFormat.replaceWith(sender, message).toUncolor
+    }
+
+    private fun formatSend(sender: Player, message: String, jpMessage: String): String {
+        return discordSendJpFormat.replaceWith(sender, message).replaceJp(jpMessage).toUncolor
     }
 
     @EventHandler

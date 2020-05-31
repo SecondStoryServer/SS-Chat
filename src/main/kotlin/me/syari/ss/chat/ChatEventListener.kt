@@ -18,36 +18,37 @@ object ChatEventListener: Event {
         val player = e.player
         val message = e.message
         e.isCancelled = true
-        broadcast(format(player, message.toUncolor))
-        if(enableDiscord) DiscordHook.send(player, message)
+        send(player, message.toUncolor)
     }
 
-    private fun format(sender: Player, message: String): String {
-        return if(matchHalfWidthChar(message)){
-            formatJapanese(sender, message)
+    private fun send(sender: Player, message: String) {
+        if(matchHalfWidthChar(message)){
+            sendJapanese(sender, message)
         } else {
-            formatNormal(sender, message)
+            sendNormal(sender, message)
         }
     }
 
-    private fun formatNormal(sender: Player, message: String): String {
-        return chatFormat.replaceWith(sender, message).toColor
+    private fun sendNormal(sender: Player, message: String) {
+        if(enableDiscord) DiscordHook.send(sender, message)
+        broadcast(chatFormat.replaceWith(sender, message).toColor)
     }
 
-    private fun formatJapanese(sender: Player, message: String): String {
+    private fun sendJapanese(sender: Player, message: String) {
         val jpMessage = IMEConverter.convertWithIMEFromRoma(message)
-        return if(jpMessage == message){
-            formatNormal(sender, message)
+        if(jpMessage == message){
+            sendNormal(sender, message)
         } else {
-            jpChatFormat.replaceWith(sender, message).replaceJp(jpMessage).toColor
+            if(enableDiscord) DiscordHook.send(sender, message, jpMessage)
+            broadcast(jpChatFormat.replaceWith(sender, message).replaceJp(jpMessage).toColor)
         }
     }
 
-    private fun String.replaceWith(sender: Player, message: String): String {
+    internal fun String.replaceWith(sender: Player, message: String): String {
         return replace("%sender%", sender.displayName).replace("%message%", message)
     }
 
-    private fun String.replaceJp(jpMessage: String): String {
+    internal fun String.replaceJp(jpMessage: String): String {
         return replace("%jp%", jpMessage)
     }
 
