@@ -32,6 +32,6 @@ object DiscordHook: Event {
     private fun formatReceive(e: DiscordMessageReceiveEvent): String {
         val senderName = e.member?.displayName ?: e.user.name
         val message = e.contentDisplay
-        return discordReceiveFormat.replace("%sender%", senderName).replace("%message%", message).toUncolor
+        return discordReceiveFormat.replace("%sender%", senderName).replace("%message%", message.toUncolor)
     }
 }
