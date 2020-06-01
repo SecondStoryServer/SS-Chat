@@ -12,10 +12,13 @@ object ConfigLoader: OnEnable {
         loadConfig(console)
     }
 
-    var jpChatFormat = "%sender%: %jp% (%message%)"
+    var jpFormat = "%jp% (%message%)"
         private set
 
     var chatFormat = "%sender%: %message%"
+        private set
+
+    var dmFormat = "%sendTo% << %sender%: %message%"
         private set
 
     var discordHookChannel = 0L
@@ -24,15 +27,13 @@ object ConfigLoader: OnEnable {
     var discordSendFormat = "**%sender%**: %message%"
         private set
 
-    var discordSendJpFormat = "**%sender%**: %jp% (%message%)"
-        private set
-
     var discordReceiveFormat = "&5[Discord] &f%sender%: %message%"
         private set
 
     private val defaultConfig = mapOf(
-        "format.jp" to jpChatFormat,
-        "format.normal" to chatFormat,
+        "format.jp" to jpFormat,
+        "format.chat" to chatFormat,
+        "format.dm" to dmFormat,
         "discord.channel" to discordHookChannel,
         "discord.format.send" to discordSendFormat,
         "discord.format.receive" to discordReceiveFormat
@@ -40,11 +41,11 @@ object ConfigLoader: OnEnable {
 
     fun loadConfig(output: CommandSender) {
         config(chatPlugin, output, "config.yml", default = defaultConfig) {
-            jpChatFormat = get("format.jp", ConfigDataType.STRING, jpChatFormat, false)
-            chatFormat = get("format.normal", ConfigDataType.STRING, chatFormat, false)
+            jpFormat = get("format.jp", ConfigDataType.STRING, jpFormat, false)
+            chatFormat = get("format.chat", ConfigDataType.STRING, chatFormat, false)
+            dmFormat = get("format.dm", ConfigDataType.STRING, dmFormat, false)
             discordHookChannel = get("discord.channel", ConfigDataType.LONG, discordHookChannel, false)
             discordSendFormat = get("discord.format.send", ConfigDataType.STRING, discordSendFormat, false)
-            discordSendJpFormat = get("discord.format.sendjp", ConfigDataType.STRING, discordSendJpFormat, false)
             discordReceiveFormat = get("discord.format.receive", ConfigDataType.STRING, discordReceiveFormat, false)
         }
     }
