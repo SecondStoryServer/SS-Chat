@@ -1,7 +1,6 @@
 package me.syari.ss.chat
 
 import me.syari.ss.chat.ConfigLoader.chatFormat
-import me.syari.ss.chat.ConfigLoader.jpChatFormat
 import me.syari.ss.chat.Main.Companion.enableDiscord
 import me.syari.ss.chat.converter.IMEConverter
 import me.syari.ss.core.auto.Event
@@ -35,7 +34,7 @@ object ChatEventListener: Event {
 
     private fun sendNormal(sender: Player, message: String) {
         if(enableDiscord) DiscordHook.send(sender, message)
-        broadcast(chatFormat.replaceWith(sender, message).toColor)
+        broadcast(chatFormat.formatChat(sender, message).toColor)
     }
 
     private fun sendJapanese(sender: Player, message: String) {
@@ -43,17 +42,16 @@ object ChatEventListener: Event {
         if(jpMessage == message){
             sendNormal(sender, message)
         } else {
-            if(enableDiscord) DiscordHook.send(sender, message, jpMessage)
-            broadcast(jpChatFormat.replaceWith(sender, message).replaceJp(jpMessage).toColor)
+            sendNormal(sender, message.formatJp(message, jpMessage))
         }
     }
 
-    internal fun String.replaceWith(sender: Player, message: String): String {
+    internal fun String.formatChat(sender: Player, message: String): String {
         return replace("%sender%", sender.displayName).replace("%message%", message)
     }
 
-    internal fun String.replaceJp(jpMessage: String): String {
-        return replace("%jp%", jpMessage)
+    private fun String.formatJp(message: String, jpMessage: String): String {
+        return replace("%message%", message).replace("%jp%", jpMessage)
     }
 
     private fun matchsHalfWidthChar(text: String): Boolean {

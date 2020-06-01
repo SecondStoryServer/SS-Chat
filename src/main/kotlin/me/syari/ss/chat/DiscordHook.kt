@@ -1,11 +1,9 @@
 package me.syari.ss.chat
 
-import me.syari.ss.chat.ChatEventListener.replaceJp
-import me.syari.ss.chat.ChatEventListener.replaceWith
+import me.syari.ss.chat.ChatEventListener.formatChat
 import me.syari.ss.chat.ConfigLoader.discordHookChannel
 import me.syari.ss.chat.ConfigLoader.discordReceiveFormat
 import me.syari.ss.chat.ConfigLoader.discordSendFormat
-import me.syari.ss.chat.ConfigLoader.discordSendJpFormat
 import me.syari.ss.core.auto.Event
 import me.syari.ss.core.code.StringEditor.toUncolor
 import me.syari.ss.core.message.Message.broadcast
@@ -19,19 +17,11 @@ object DiscordHook: Event {
         get() = TextChannel.get(discordHookChannel)?.name
 
     fun send(sender: Player, message: String){
-        TextChannel.get(discordHookChannel)?.sendMessage(formatSend(sender, message))
+        TextChannel.get(discordHookChannel)?.sendMessage(formatChat(sender, message))
     }
 
-    fun send(sender: Player, message: String, jpMessage: String){
-        TextChannel.get(discordHookChannel)?.sendMessage(formatSend(sender, message, jpMessage))
-    }
-
-    private fun formatSend(sender: Player, message: String): String {
-        return discordSendFormat.replaceWith(sender, message).toUncolor
-    }
-
-    private fun formatSend(sender: Player, message: String, jpMessage: String): String {
-        return discordSendJpFormat.replaceWith(sender, message).replaceJp(jpMessage).toUncolor
+    private fun formatChat(sender: Player, message: String): String {
+        return discordSendFormat.formatChat(sender, message).toUncolor
     }
 
     @EventHandler
