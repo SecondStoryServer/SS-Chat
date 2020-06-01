@@ -3,7 +3,6 @@ package me.syari.ss.chat
 import me.syari.ss.chat.ConfigLoader.loadConfig
 import me.syari.ss.chat.Main.Companion.chatPlugin
 import me.syari.ss.chat.Main.Companion.enableDiscord
-import me.syari.ss.chat.direct.DirectMessage.lastDirectMessagePartner
 import me.syari.ss.chat.direct.DirectMessageSender
 import me.syari.ss.core.auto.OnEnable
 import me.syari.ss.core.command.create.CreateCommand.createCommand

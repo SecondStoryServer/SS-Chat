@@ -9,6 +9,22 @@ import org.bukkit.entity.Player
 interface DirectMessageSender {
     val sender: CommandSender?
 
+    var lastDirectMessagePartner
+        get() = lastDirectMessagePartnerMap[this]
+        set(value) {
+            if(value != null){
+                lastDirectMessagePartnerMap[this] = value
+            } else {
+                lastDirectMessagePartnerMap.remove(this)
+            }
+        }
+
+    fun sendDM(sendTo: DirectMessageSender, message: String){
+        // 送信処理
+        lastDirectMessagePartner = sendTo
+        sendTo.lastDirectMessagePartner = this
+    }
+
     data class Player(val uuidPlayer: UUIDPlayer): DirectMessageSender {
         override val sender: CommandSender?
             get() = uuidPlayer.player
@@ -20,6 +36,8 @@ interface DirectMessageSender {
     }
 
     companion object {
+        private val lastDirectMessagePartnerMap = mutableMapOf<DirectMessageSender, DirectMessageSender>()
+
         fun from(player: org.bukkit.entity.Player): DirectMessageSender {
             return Player(UUIDPlayer(player))
         }
