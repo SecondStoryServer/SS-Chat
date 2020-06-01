@@ -4,6 +4,7 @@ import me.syari.ss.core.Main.Companion.console
 import me.syari.ss.core.player.UUIDPlayer
 import org.bukkit.command.CommandSender
 import org.bukkit.command.ConsoleCommandSender
+import org.bukkit.entity.Player
 
 interface DirectMessageSender {
     val sender: CommandSender?
@@ -19,6 +20,10 @@ interface DirectMessageSender {
     }
 
     companion object {
+        fun from(player: org.bukkit.entity.Player): DirectMessageSender {
+            return Player(UUIDPlayer(player))
+        }
+
         fun from(commandSender: CommandSender): DirectMessageSender? {
             return when(commandSender){
                 is org.bukkit.entity.Player -> Player(UUIDPlayer(commandSender))

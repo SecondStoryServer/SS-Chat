@@ -3,9 +3,12 @@ package me.syari.ss.chat
 import me.syari.ss.chat.ConfigLoader.loadConfig
 import me.syari.ss.chat.Main.Companion.chatPlugin
 import me.syari.ss.chat.Main.Companion.enableDiscord
+import me.syari.ss.chat.direct.DirectMessage.lastDirectMessagePartner
+import me.syari.ss.chat.direct.DirectMessageSender
 import me.syari.ss.core.auto.OnEnable
 import me.syari.ss.core.command.create.CreateCommand.createCommand
 import me.syari.ss.core.command.create.CreateCommand.element
+import me.syari.ss.core.command.create.CreateCommand.onlinePlayers
 import me.syari.ss.core.command.create.CreateCommand.tab
 
 object CommandCreator: OnEnable {
@@ -32,6 +35,30 @@ object CommandCreator: OnEnable {
                     "chat reload" to "コンフィグを再読み込みします"
                 )
             }
+        }
+
+        createCommand(chatPlugin, "tell", "SS-Chat",
+            tab { _, _ -> onlinePlayers.joinIf(true, "Console") },
+            alias = listOf("t")
+        ){ sender, args ->
+            val directMessageSender = DirectMessageSender.from(sender) ?: return@createCommand
+            if(args.isEmpty) return@createCommand sendError("送信先を入力してください")
+            val sendTo = if(args[0].equals("console", true)){
+                DirectMessageSender.Console
+            } else {
+                val sendToPlayer = args.getPlayer(0, false) ?: return@createCommand
+                DirectMessageSender.from(sendToPlayer)
+            }
+            val message = args.slice(1 until args.size).joinToString(" ")
+
+        }
+
+        createCommand(chatPlugin, "reply", "SS-Chat", alias = listOf("r")){ sender, args ->
+            val directMessageSender = DirectMessageSender.from(sender) ?: return@createCommand
+            val lastDirectMessagePartner = directMessageSender.lastDirectMessagePartner
+                ?: return@createCommand sendError("返信先がありません")
+            val message = args.joinToString(" ")
+
         }
     }
 }
