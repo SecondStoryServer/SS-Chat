@@ -1,6 +1,7 @@
 package me.syari.ss.chat
 
 import me.syari.ss.chat.ConfigLoader.chatFormat
+import me.syari.ss.chat.ConfigLoader.jpFormat
 import me.syari.ss.chat.Main.Companion.enableDiscord
 import me.syari.ss.chat.converter.IMEConverter
 import me.syari.ss.core.auto.Event
@@ -42,7 +43,7 @@ object ChatEventListener: Event {
         if(jpMessage == message){
             sendNormal(sender, message)
         } else {
-            sendNormal(sender, message.formatJp(message, jpMessage))
+            sendNormal(sender, formatJp(message, jpMessage))
         }
     }
 
@@ -50,8 +51,8 @@ object ChatEventListener: Event {
         return replace("%sender%", sender.displayName).replace("%message%", message)
     }
 
-    private fun String.formatJp(message: String, jpMessage: String): String {
-        return replace("%message%", message).replace("%jp%", jpMessage)
+    internal fun formatJp(message: String, jpMessage: String): String {
+        return jpFormat.replace("%message%", message).replace("%jp%", jpMessage)
     }
 
     private fun matchsHalfWidthChar(text: String): Boolean {

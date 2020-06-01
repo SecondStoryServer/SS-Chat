@@ -1,12 +1,19 @@
 package me.syari.ss.chat.direct
 
+import me.syari.ss.chat.ChatEventListener.formatJp
+import me.syari.ss.chat.ConfigLoader.dmFormat
+import me.syari.ss.chat.converter.IMEConverter
 import me.syari.ss.core.Main.Companion.console
+import me.syari.ss.core.message.Message.send
 import me.syari.ss.core.player.UUIDPlayer
 import org.bukkit.command.CommandSender
 import org.bukkit.command.ConsoleCommandSender
 
 interface DirectMessageSender {
     val sender: CommandSender?
+
+    val senderName
+        get() = sender?.name.toString()
 
     var lastDMPartner
         get() = lastDirectMessagePartnerMap[this]
@@ -19,7 +26,9 @@ interface DirectMessageSender {
         }
 
     fun sendDM(sendTo: DirectMessageSender, message: String){
-        // 送信処理
+        val sendMessage = dmFormat.formatName(this, sendTo).replace("%message%", getMessage(message))
+        sender?.send(sendMessage)
+        sendTo.sender?.send(sendMessage)
         lastDMPartner = sendTo
         sendTo.lastDMPartner = this
     }
@@ -46,6 +55,19 @@ interface DirectMessageSender {
                 is org.bukkit.entity.Player -> Player(UUIDPlayer(commandSender))
                 is ConsoleCommandSender -> Console
                 else -> null
+            }
+        }
+
+        private fun String.formatName(sender: DirectMessageSender, sendTo: DirectMessageSender): String {
+            return replace("%sender%", sender.senderName).replace("%sendTo%", sendTo.senderName)
+        }
+
+        private fun getMessage(message: String): String {
+            val jpMessage = IMEConverter.convertWithIMEFromRoma(message)
+            return if(jpMessage == message){
+                message
+            } else {
+                formatJp(message, jpMessage)
             }
         }
     }
