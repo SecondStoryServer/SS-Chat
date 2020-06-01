@@ -4,12 +4,11 @@ import me.syari.ss.core.Main.Companion.console
 import me.syari.ss.core.player.UUIDPlayer
 import org.bukkit.command.CommandSender
 import org.bukkit.command.ConsoleCommandSender
-import org.bukkit.entity.Player
 
 interface DirectMessageSender {
     val sender: CommandSender?
 
-    var lastDirectMessagePartner
+    var lastDMPartner
         get() = lastDirectMessagePartnerMap[this]
         set(value) {
             if(value != null){
@@ -21,8 +20,8 @@ interface DirectMessageSender {
 
     fun sendDM(sendTo: DirectMessageSender, message: String){
         // 送信処理
-        lastDirectMessagePartner = sendTo
-        sendTo.lastDirectMessagePartner = this
+        lastDMPartner = sendTo
+        sendTo.lastDMPartner = this
     }
 
     data class Player(val uuidPlayer: UUIDPlayer): DirectMessageSender {

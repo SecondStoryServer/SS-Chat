@@ -40,7 +40,7 @@ object CommandCreator: OnEnable {
             tab { _, _ -> onlinePlayers.joinIf(true, "Console") },
             alias = listOf("t")
         ){ sender, args ->
-            val directMessageSender = DirectMessageSender.from(sender) ?: return@createCommand
+            val dmSender = DirectMessageSender.from(sender) ?: return@createCommand
             if(args.isEmpty) return@createCommand sendError("送信先を入力してください")
             val sendTo = if(args[0].equals("console", true)){
                 DirectMessageSender.Console
@@ -49,15 +49,14 @@ object CommandCreator: OnEnable {
                 DirectMessageSender.from(sendToPlayer)
             }
             val message = args.slice(1 until args.size).joinToString(" ")
-
+            dmSender.sendDM(sendTo, message)
         }
 
         createCommand(chatPlugin, "reply", "SS-Chat", alias = listOf("r")){ sender, args ->
-            val directMessageSender = DirectMessageSender.from(sender) ?: return@createCommand
-            val lastDirectMessagePartner = directMessageSender.lastDirectMessagePartner
-                ?: return@createCommand sendError("返信先がありません")
+            val dmSender = DirectMessageSender.from(sender) ?: return@createCommand
+            val lastDMPartner = dmSender.lastDMPartner ?: return@createCommand sendError("返信先がありません")
             val message = args.joinToString(" ")
-
+            dmSender.sendDM(lastDMPartner, message)
         }
     }
 }
