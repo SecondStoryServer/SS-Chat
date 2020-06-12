@@ -37,7 +37,7 @@ object CommandCreator: OnEnable {
         }
 
         createCommand(chatPlugin, "tell", "SS-Chat",
-            tab { _, _ -> onlinePlayers.joinIf(true, "Console") },
+            tab { _, _ -> onlinePlayers.join("Console") },
             alias = listOf("t")
         ){ sender, args ->
             val dmSender = DirectMessageSender.from(sender) ?: return@createCommand
