@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "me.syari.ss.chat"
-version = "1.0"
+version = "1.1"
 
 val ssMavenRepoURL: String by extra
 
@@ -21,7 +21,8 @@ repositories {
 dependencies {
     implementation("com.destroystokyo.paper:paper-api:1.15.2-R0.1-SNAPSHOT")
     implementation("me.syari.ss.core:SS-Core:3.0")
-    implementation("me.syari.ss.discord:SS-Discord:1.0.1")
+    implementation("me.syari.discord:KtDiscord:1.0")
+    implementation("me.syari.ss.discord:SS-Discord:2.0")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 }
 
