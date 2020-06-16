@@ -12,14 +12,15 @@ import me.syari.ss.core.command.create.CreateCommand.tab
 
 object CommandCreator: OnEnable {
     override fun onEnable() {
-        createCommand(chatPlugin, "chat", "SS-Chat",
+        createCommand(
+            chatPlugin, "chat", "SS-Chat",
             tab { _, _ -> element("discord", "reload") }
-        ){ sender, args ->
-            when(args.whenIndex(0)){
+        ) { sender, args ->
+            when (args.whenIndex(0)) {
                 "discord" -> {
-                    val message = if(enableDiscord) {
+                    val message = if (enableDiscord) {
                         "&aDiscord は有効になっています &7(接続先: #${DiscordHook.hookChannel})"
-                    } else{
+                    } else {
                         "&cDiscord は無効になっています"
                     }
                     sendWithPrefix(message)
@@ -36,13 +37,14 @@ object CommandCreator: OnEnable {
             }
         }
 
-        createCommand(chatPlugin, "tell", "SS-Chat",
+        createCommand(
+            chatPlugin, "tell", "SS-Chat",
             tab { _, _ -> onlinePlayers.join("Console") },
             alias = listOf("t")
-        ){ sender, args ->
+        ) { sender, args ->
             val dmSender = DirectMessageSender.from(sender) ?: return@createCommand
-            if(args.isEmpty) return@createCommand sendError("送信先を入力してください")
-            val sendTo = if(args[0].equals("console", true)){
+            if (args.isEmpty) return@createCommand sendError("送信先を入力してください")
+            val sendTo = if (args[0].equals("console", true)) {
                 DirectMessageSender.Console
             } else {
                 val sendToPlayer = args.getPlayer(0, false) ?: return@createCommand
@@ -52,7 +54,7 @@ object CommandCreator: OnEnable {
             dmSender.sendDM(sendTo, message)
         }
 
-        createCommand(chatPlugin, "reply", "SS-Chat", alias = listOf("r")){ sender, args ->
+        createCommand(chatPlugin, "reply", "SS-Chat", alias = listOf("r")) { sender, args ->
             val dmSender = DirectMessageSender.from(sender) ?: return@createCommand
             val lastDMPartner = dmSender.lastDMPartner ?: return@createCommand sendError("返信先がありません")
             val message = args.joinToString(" ")

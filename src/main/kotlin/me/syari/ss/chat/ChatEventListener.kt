@@ -21,9 +21,12 @@ object ChatEventListener: Event {
         send(player, message.toUncolor)
     }
 
-    private fun send(sender: Player, message: String) {
-        if(matchsHalfWidthChar(message)){
-            if (message.firstOrNull() == '.'){
+    private fun send(
+        sender: Player,
+        message: String
+    ) {
+        if (matchsHalfWidthChar(message)) {
+            if (message.firstOrNull() == '.') {
                 sendNormal(sender, message.substring(2))
             } else {
                 sendJapanese(sender, message)
@@ -33,25 +36,37 @@ object ChatEventListener: Event {
         }
     }
 
-    private fun sendNormal(sender: Player, message: String) {
-        if(enableDiscord) DiscordHook.send(sender, message)
+    private fun sendNormal(
+        sender: Player,
+        message: String
+    ) {
+        if (enableDiscord) DiscordHook.send(sender, message)
         broadcast(chatFormat.formatChat(sender, message).toColor)
     }
 
-    private fun sendJapanese(sender: Player, message: String) {
+    private fun sendJapanese(
+        sender: Player,
+        message: String
+    ) {
         val jpMessage = IMEConverter.convertWithIMEFromRoma(message)
-        if(jpMessage == message){
+        if (jpMessage == message) {
             sendNormal(sender, message)
         } else {
             sendNormal(sender, formatJp(message, jpMessage))
         }
     }
 
-    internal fun String.formatChat(sender: Player, message: String): String {
+    internal fun String.formatChat(
+        sender: Player,
+        message: String
+    ): String {
         return replace("%sender%", sender.displayName).replace("%message%", message)
     }
 
-    internal fun formatJp(message: String, jpMessage: String): String {
+    internal fun formatJp(
+        message: String,
+        jpMessage: String
+    ): String {
         return jpFormat.replace("%message%", message).replace("%jp%", jpMessage)
     }
 

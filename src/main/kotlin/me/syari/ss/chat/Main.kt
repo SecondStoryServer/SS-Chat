@@ -20,7 +20,7 @@ class Main: JavaPlugin() {
         enableDiscord = server.pluginManager.isPluginEnabled("SS-Discord")
         OnEnable.register(ConfigLoader, CommandCreator)
         Event.register(this, ChatEventListener)
-        if(enableDiscord) {
+        if (enableDiscord) {
             Event.register(this, DiscordHook)
             chatLogger.info("[SS-Chat] Discord を有効にしました")
         } else {

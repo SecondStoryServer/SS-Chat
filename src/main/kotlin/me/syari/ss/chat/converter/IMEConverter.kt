@@ -22,32 +22,32 @@ object IMEConverter {
         return buildString {
             var index = 0
             while (index < readFile.length) {
-                if(level < 3) {
+                if (level < 3) {
                     val begin = readFile.indexOf("[", index)
                     val end = readFile.indexOf("]", index)
                     index = when {
-                        begin == - 1 -> {
+                        begin == -1 -> {
                             return toString()
                         }
                         begin < end -> {
-                            level ++
+                            level++
                             begin + 1
                         }
                         else -> {
-                            level --
+                            level--
                             end + 1
                         }
                     }
                 } else {
                     val begin = readFile.indexOf("\"", index)
                     val end = readFile.indexOf("\"", begin + 1)
-                    if(begin == - 1 || end == - 1) return toString()
+                    if (begin == -1 || end == -1) return toString()
                     append(readFile.substring(begin + 1, end))
                     val next = readFile.indexOf("]", end)
-                    if(next == - 1) {
+                    if (next == -1) {
                         return toString()
                     } else {
-                        level --
+                        level--
                         index = next + 1
                     }
                 }

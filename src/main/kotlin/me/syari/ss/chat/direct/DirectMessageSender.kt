@@ -18,18 +18,21 @@ interface DirectMessageSender {
     var lastDMPartner
         get() = lastDMPartnerMap[this]
         set(value) {
-            if(value != null){
+            if (value != null) {
                 lastDMPartnerMap[this] = value
             } else {
                 lastDMPartnerMap.remove(this)
             }
         }
 
-    fun sendDM(sendTo: DirectMessageSender, message: String){
+    fun sendDM(
+        sendTo: DirectMessageSender,
+        message: String
+    ) {
         val sendMessage = dmFormat.formatName(this, sendTo).replace("%message%", getMessage(message))
         sender?.send(sendMessage)
         sendTo.sender?.send(sendMessage)
-        if(this !is Console && sendTo !is Console) console.send(sendMessage)
+        if (this !is Console && sendTo !is Console) console.send(sendMessage)
         lastDMPartner = sendTo
         sendTo.lastDMPartner = this
     }
@@ -52,20 +55,23 @@ interface DirectMessageSender {
         }
 
         fun from(commandSender: CommandSender): DirectMessageSender? {
-            return when(commandSender){
+            return when (commandSender) {
                 is org.bukkit.entity.Player -> Player(UUIDPlayer(commandSender))
                 is ConsoleCommandSender -> Console
                 else -> null
             }
         }
 
-        private fun String.formatName(sender: DirectMessageSender, sendTo: DirectMessageSender): String {
+        private fun String.formatName(
+            sender: DirectMessageSender,
+            sendTo: DirectMessageSender
+        ): String {
             return replace("%sender%", sender.senderName).replace("%sendTo%", sendTo.senderName)
         }
 
         private fun getMessage(message: String): String {
             val jpMessage = IMEConverter.convertWithIMEFromRoma(message)
-            return if(jpMessage == message){
+            return if (jpMessage == message) {
                 message
             } else {
                 formatJp(message, jpMessage)

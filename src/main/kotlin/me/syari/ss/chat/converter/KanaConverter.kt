@@ -61,7 +61,7 @@ object KanaConverter {
     )
 
     private fun vowelToIndex(char: Char): Int? {
-        return when(char){
+        return when (char) {
             'a' -> 0
             'i' -> 1
             'u' -> 2
@@ -71,7 +71,11 @@ object KanaConverter {
         }
     }
 
-    private fun getKanaFromTable(last: String, vowel: Char, vowelIndex: Int): String {
+    private fun getKanaFromTable(
+        last: String,
+        vowel: Char,
+        vowelIndex: Int
+    ): String {
         val consonantArray = kanaTable[last]
         return when {
             consonantArray != null -> consonantArray[vowelIndex]
@@ -83,20 +87,20 @@ object KanaConverter {
     fun convertToKana(roma: String): String {
         return buildString {
             var last = ""
-            for(char in roma){
+            for (char in roma) {
                 val index = vowelToIndex(char)
-                if(index != null){
+                if (index != null) {
                     append(getKanaFromTable(last, char, index))
                     last = ""
                 } else {
-                    if(last == "n" && char != 'y') {
+                    if (last == "n" && char != 'y') {
                         append("ん")
                         last = ""
-                        if(char == 'n') {
+                        if (char == 'n') {
                             continue
                         }
                     }
-                    if(Character.isLetter(char)) {
+                    if (Character.isLetter(char)) {
                         last = when {
                             Character.isUpperCase(char) -> {
                                 append(last + char)
@@ -110,7 +114,7 @@ object KanaConverter {
                         }
                     } else {
                         append(
-                            last + when(char) {
+                            last + when (char) {
                                 '-' -> "ー"
                                 '.' -> "。"
                                 ',' -> "、"
