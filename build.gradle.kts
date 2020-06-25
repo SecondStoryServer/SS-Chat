@@ -19,7 +19,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.destroystokyo.paper:paper-api:1.15.2-R0.1-SNAPSHOT")
+    implementation("com.destroystokyo.paper:paper-api:1.16.1-R0.1-SNAPSHOT")
     implementation("me.syari.ss.core:SS-Core:3.0")
     implementation("me.syari.discord:KtDiscord:1.0")
     implementation("me.syari.ss.discord:SS-Discord:2.0")
@@ -33,7 +33,7 @@ bukkit {
     author = "sya_ri"
     depend = listOf("SS-Core")
     softDepend = listOf("SS-Discord")
-    apiVersion = "1.15"
+    apiVersion = "1.16"
 }
 
 tasks {
